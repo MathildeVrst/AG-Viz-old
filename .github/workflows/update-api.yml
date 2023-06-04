@@ -1,0 +1,32 @@
+name: Update anthologiagraeca/api
+
+on:
+  schedule:
+    - cron: '0 20 * * *'
+  workflow_dispatch:
+  
+jobs:
+  update_api:
+    name: Update plot with newest API entries
+    runs-on: ubuntu-latest 
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2      
+      - name: Setup Python
+        uses: actions/setup-python@v2
+          with:
+            python-version: '3.7'
+            cache: 'pip'      
+      - name: Install Dependencies
+        run: pip install -r requirements.txt      
+      - name: Run Script and Update Plot
+        run: |
+          jupyter nbconvert --to script Prefinal.ipynb
+          python Prefinal.py      
+      - name: Commit and Push Changes
+        run: |
+          git config --local user.email "mathilde.verstraete@umontreal.ca"
+          git config --local user.name "MathildeVrst"
+          git add f'api_json_{datetime.now().date()}.json'
+          git commit -m "Updated plot on `date` with GitHub Actions"
+          git push origin master
