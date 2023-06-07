@@ -27,6 +27,6 @@ jobs:
         run: |
           git config --local user.email "mathilde.verstraete@umontreal.ca"
           git config --local user.name "MathildeVrst"
-          git add f'api_json_{datetime.now().date()}.json'
+          git add api_json.json
           git commit -m "Updated plot on `date` with GitHub Actions"
           git push origin master
